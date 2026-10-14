@@ -1,0 +1,12 @@
+schema: "classroom50/repo-config/v1"
+classroom: "web-design-2"
+assignment: "firestore-quiz"
+owner:
+  username: "BlokMaster21309"
+  id: 135909100
+  accepted_at: "2026-10-14T15:12:11Z"
+source:
+  owner: "IACS-26-27"
+  owner_id: 326979196
+  repo: "firestore-quiz-starter"
+  branch: "main"
