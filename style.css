@@ -1,1 +1,11 @@
 /* Your styles go here. */
+form {
+	animation: bobert 3s ease-in-out infinite alternate;
+}
+
+@keyframes bobert {
+	0% {}
+	100% {
+		box-shadow: 0 0 10px 5px red;
+	}
+}
