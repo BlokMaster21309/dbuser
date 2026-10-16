@@ -1,6 +1,6 @@
 /* Your styles go here. */
-form {
-	animation: bobert 3s ease-in-out infinite alternate;
+.important {
+	animation: bobert 2s ease-out infinite alternate;
 }
 
 @keyframes bobert {
@@ -8,4 +8,9 @@ form {
 	100% {
 		box-shadow: 0 0 10px 5px red;
 	}
+}
+
+label {
+	display: block;
+	margin-top: 10px;
 }

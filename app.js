@@ -19,11 +19,28 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Your code goes below this line.
+let i = 0;
+
+const qT = document.getElementById("qT");
+const qQ = document.getElementById("qQ");
+const qL = document.getElementById("qL");
+
 const quizRef = doc(db, "quizzes/quiz-1");
 console.log("vhoriz");
 const quizSnapshot = await getDoc(quizRef);
 console.log("toneal");
 const quiz = quizSnapshot.data();
 console.log(quiz);
-console.log("this quiz has", quiz.questions.length, "questions");
+console.log(`this quiz has ${quiz.questions.length} questions`);
 console.log(`the first question is "${quiz.questions[1].text}"`);
+
+qL.innerHTML = quiz.title;
+for (const q of quiz.questions) {
+	i = i + 1;
+	qQ.innerHTML += `
+		<label for="q${i}">${q.text}
+			<input id="q${i}" name="q${i}">
+		</label>
+		`;
+	console.log(`Filled question ${i} with ${q.text}`);
+};
