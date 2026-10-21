@@ -19,7 +19,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Your code goes below this line.
-let i = 0;
+let i;
+let user;
 
 const qT = document.getElementById("qT");
 const qQ = document.getElementById("qQ");
@@ -35,12 +36,52 @@ console.log(`this quiz has ${quiz.questions.length} questions`);
 console.log(`the first question is "${quiz.questions[1].text}"`);
 
 qL.innerHTML = quiz.title;
+i = 0
 for (const q of quiz.questions) {
+	fillQuestion(q);
 	i = i + 1;
-	qQ.innerHTML += `
-		<label for="q${i}">${q.text}
-			<input id="q${i}" name="q${i}">
-		</label>
-		`;
-	console.log(`Filled question ${i} with ${q.text}`);
 };
+
+function fillQuestion(q) {
+	if (quiz.questions[i].text) {
+		qQ.innerHTML += `
+			<label for="q${i}">${q.text}
+				<input id="q${i}" name="q${i}">
+			</label>
+		`;
+		console.log(`Filled question ${i} with ${q.text}`)
+		return "text";
+	}
+
+	if (quiz.questions[i].radio) {
+		qQ.innerHTML += `
+			<label for="q${i}">${q.text}
+				<input id="q${i}" name="q${i}">
+			</label>
+		`;
+		console.log(`Filled question ${i} with ${q.arbitrary}`)
+		return "radio";
+	}
+
+	if (quiz.questions[i].arbitrary) {
+		qQ.innerHTML += `
+			<div id="q${i}">${q.arbitrary}</div>
+		`;
+		console.log(`Filled question ${i} with ${q.arbitrary}`)
+		return "arbitrary";
+	}
+
+	else {
+		console.error(`Failed to fill question ${i} from ${q}`)
+		return false;
+	}
+}
+
+const signInButton = document.querySelector("#sign-in");
+signInButton.addEventListener("click", async () => {
+  const result = await signInWithPopup(auth, new GoogleAuthProvider());
+  console.log("Signed in as obj", result.user);
+  console.log("Signed in as", result.user.email);
+  user = result.user; // God save the user!
+	localStorage.setItem("user", JSON.stringify(result.user))
+});
