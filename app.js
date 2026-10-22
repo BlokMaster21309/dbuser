@@ -20,13 +20,16 @@ const auth = getAuth(app);
 
 // Your code goes below this line.
 let i;
-let user;
+let user = JSON.parse(localStorage.getItem("user"));
 
 const qT = document.getElementById("qT");
 const qQ = document.getElementById("qQ");
 const qL = document.getElementById("qL");
+const sI = document.getElementById("sI");
 
-const quizRef = doc(db, "quizzes/quiz-1");
+const quizzes = doc(db, "quizzes")
+
+let quizRef = doc(db, "quizzes/quiz-1");
 console.log("vhoriz");
 const quizSnapshot = await getDoc(quizRef);
 console.log("toneal");
@@ -77,11 +80,21 @@ function fillQuestion(q) {
 	}
 }
 
-const signInButton = document.querySelector("#sign-in");
+auth, (user) => {
+  if (user) {
+    // User is signed in and session is valid
+    console.log("User is authenticated:", user.uid);
+  } else {
+    // User is signed out or session has expired
+    console.log("No valid authentication session found.");
+		signInButton.hidden = false;
+  }
+};
+
 signInButton.addEventListener("click", async () => {
   const result = await signInWithPopup(auth, new GoogleAuthProvider());
   console.log("Signed in as obj", result.user);
   console.log("Signed in as", result.user.email);
-  user = result.user; // God save the user!
+  user = result.user; // God save the quser!
 	localStorage.setItem("user", JSON.stringify(result.user))
 });
