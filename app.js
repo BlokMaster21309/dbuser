@@ -27,7 +27,12 @@ const qQ = document.getElementById("qQ");
 const qL = document.getElementById("qL");
 const sI = document.getElementById("sI");
 
-const quizzes = doc(db, "quizzes")
+const quizzes = await getDocs(collection(db, "quizzes"))
+console.log(quizzes)
+for (const responseDoc of quizzes.docs) {
+  const response = responseDoc.data();
+  console.log(`Recived quiz: "${response.title}"`);
+}
 
 let quizRef = doc(db, "quizzes/quiz-1");
 console.log("vhoriz");
