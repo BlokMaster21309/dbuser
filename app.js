@@ -19,6 +19,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Your code goes below this line.
+let response
 let i;
 let user = JSON.parse(localStorage.getItem("user"));
 
@@ -26,12 +27,15 @@ const qT = document.getElementById("qT");
 const qQ = document.getElementById("qQ");
 const qL = document.getElementById("qL");
 const sI = document.getElementById("sI");
+const fS = document.getElementById("formselecta")
 
 const quizzes = await getDocs(collection(db, "quizzes"))
 console.log(quizzes)
-for (const responseDoc of quizzes.docs) {
-  const response = responseDoc.data();
-  console.log(`Recived quiz: "${response.title}"`);
+i = 0
+for (let responseDoc of quizzes.docs) {
+  response = responseDoc.data();
+	fillFormOption()
+	i = i + 1
 }
 
 let quizRef = doc(db, "quizzes/quiz-1");
@@ -50,6 +54,14 @@ for (const q of quiz.questions) {
 	i = i + 1;
 };
 
+function fillFormOption() {
+  console.log(`Recived quiz: "${response.title}"`);
+	const fopt = document.createElement("option");
+		fopt.textContent = response.title;
+		fopt.id = `f${i}`
+	fS.appendChild(fopt);
+}
+
 function fillQuestion(q) {
 	if (quiz.questions[i].text) {
 		qQ.innerHTML += `
@@ -67,7 +79,7 @@ function fillQuestion(q) {
 				<input id="q${i}" name="q${i}">
 			</label>
 		`;
-		console.log(`Filled question ${i} with ${q.arbitrary}`)
+		console.log(`Filled question ${i} with ${q.radio}`)
 		return "radio";
 	}
 
@@ -96,7 +108,7 @@ auth, (user) => {
   }
 };
 
-signInButton.addEventListener("click", async () => {
+sI.addEventListener("click", async () => {
   const result = await signInWithPopup(auth, new GoogleAuthProvider());
   console.log("Signed in as obj", result.user);
   console.log("Signed in as", result.user.email);
