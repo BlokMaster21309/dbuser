@@ -19,7 +19,12 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Your code goes below this line.
-let response
+let response;
+let sF;
+let id;
+let quizRef;
+let quizSnapshot;
+let quiz;
 let i;
 let user = JSON.parse(localStorage.getItem("user"));
 
@@ -27,38 +32,62 @@ const qT = document.getElementById("qT");
 const qQ = document.getElementById("qQ");
 const qL = document.getElementById("qL");
 const sI = document.getElementById("sI");
-const fS = document.getElementById("formselecta")
+const fS = document.getElementById("formselecta");
+const dM = document.getElementById("main");
+const fJ = document.getElementById("failure");
+
+fJ.hidden = true
+dM.hidden = false
 
 const quizzes = await getDocs(collection(db, "quizzes"))
 console.log(quizzes)
-i = 0
 for (let responseDoc of quizzes.docs) {
   response = responseDoc.data();
+	id = responseDoc.id;
 	fillFormOption()
-	i = i + 1
 }
 
-let quizRef = doc(db, "quizzes/quiz-1");
-console.log("vhoriz");
-const quizSnapshot = await getDoc(quizRef);
-console.log("toneal");
-const quiz = quizSnapshot.data();
-console.log(quiz);
-console.log(`this quiz has ${quiz.questions.length} questions`);
-console.log(`the first question is "${quiz.questions[1].text}"`);
+fS.addEventListener("change", (e) => {
+		if (e.target.value) {
+			sF = e.target.value;
+			fillFrom()
+			console.log(`Form selected: ${e.target.value}.`);
+		} else {
+			sF = null;
+			unfillForm()
+			console.log("Form deselected.");
+		}
+	});
 
-qL.innerHTML = quiz.title;
-i = 0
-for (const q of quiz.questions) {
-	fillQuestion(q);
-	i = i + 1;
+async function fillFrom() {
+	console.log(`quizzes/${sF}`);
+	quizRef = doc(db, `quizzes/${sF}`);
+	console.log(quizRef);
+	quizSnapshot = await getDoc(quizRef);
+	console.log(quizSnapshot)
+	quiz = quizSnapshot.data();
+	console.log(quiz);
+	console.log(`this quiz has ${quiz.questions.length} questions`);
+	console.log(`the first question is "${quiz.questions[1].text}"`);
+
+	qL.innerHTML = quiz.title;
+	i = 0
+	for (const q of quiz.questions) {
+		fillQuestion(q);
+		i = i + 1;
+	};
 };
+
+function unfillForm() {
+	console.log("unimplemented")
+	qQ.removeChild(id=`q*`)
+}
 
 function fillFormOption() {
   console.log(`Recived quiz: "${response.title}"`);
 	const fopt = document.createElement("option");
 		fopt.textContent = response.title;
-		fopt.id = `f${i}`
+		fopt.value = id
 	fS.appendChild(fopt);
 }
 
