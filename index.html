@@ -10,15 +10,14 @@
   <body>
 		<p id="failure">Javascript is required to use this page.</p>
 		<main id="main" hidden>
-			<button id="sI">Sign In</button>
-			<form>
-				<select id="formselecta" name="formselecta">
-					<option value="">-- Select A Form to View --</option>
-				</select>
-			</form>
-			<form id="form" action>
+			<button id="sI" hidden>Sign In To Submit</button>
+			<form id="form" action="">
 				<fieldset id="qQ">
-					<legend id="qL"></legend>
+					<legend id="qL">
+						<select id="formselecta" name="formselecta">
+							<option value="">-- Select A Form to <section id="viw">View</section> --</option>
+						</select>
+					</legend>
 				</fieldset>
 				<button id="submissibles" type="submit">Submit</button>
 				<button id="pookieReese" type="reset">Reset</button>

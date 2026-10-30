@@ -4,6 +4,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+	onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   getFirestore,
@@ -19,6 +20,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Your code goes below this line.
+const prefillQuiz = (new URLSearchParams(window.location.search)).get('quiz')
+
 let response;
 let sF;
 let id;
@@ -36,20 +39,21 @@ const fS = document.getElementById("formselecta");
 const dM = document.getElementById("main");
 const fJ = document.getElementById("failure");
 
-fJ.hidden = true
-dM.hidden = false
+fJ.hidden = true;
+dM.hidden = false;
 
-const quizzes = await getDocs(collection(db, "quizzes"))
-console.log(quizzes)
+const quizzes = await getDocs(collection(db, "quizzes"));
+console.log(quizzes);
 for (let responseDoc of quizzes.docs) {
   response = responseDoc.data();
 	id = responseDoc.id;
-	fillFormOption()
-}
+	fillFormOption();
+};
 
 fS.addEventListener("change", (e) => {
 		if (e.target.value) {
 			sF = e.target.value;
+			unfillForm()
 			fillFrom()
 			console.log(`Form selected: ${e.target.value}.`);
 		} else {
@@ -70,7 +74,6 @@ async function fillFrom() {
 	console.log(`this quiz has ${quiz.questions.length} questions`);
 	console.log(`the first question is "${quiz.questions[1].text}"`);
 
-	qL.innerHTML = quiz.title;
 	i = 0
 	for (const q of quiz.questions) {
 		fillQuestion(q);
@@ -79,8 +82,9 @@ async function fillFrom() {
 };
 
 function unfillForm() {
-	console.log("unimplemented")
-	qQ.removeChild(id=`q*`)
+	console.log("half implemented")
+	const qP = qQ.querySelectorAll(".qP");
+	qP.forEach(child => child.remove());
 }
 
 function fillFormOption() {
@@ -93,11 +97,16 @@ function fillFormOption() {
 
 function fillQuestion(q) {
 	if (quiz.questions[i].text) {
-		qQ.innerHTML += `
-			<label for="q${i}">${q.text}
-				<input id="q${i}" name="q${i}">
-			</label>
-		`;
+		const laPeace = document.createElement("label");
+			laPeace.textContent = q.text;
+			laPeace.for = `q${i}`;
+			laPeace.classList = "qP TextQuestionLabel";
+			const laQuease = document.createElement("input");
+				laQuease.id = `q${i}`;
+				laQuease.name = `q${i}`;
+				laQuease.classList = "qP TextQuestion";
+			laPeace.appendChild(laQuease);
+		qQ.appendChild(laPeace);
 		console.log(`Filled question ${i} with ${q.text}`)
 		return "text";
 	}
@@ -126,16 +135,14 @@ function fillQuestion(q) {
 	}
 }
 
-auth, (user) => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in and session is valid
     console.log("User is authenticated:", user.uid);
   } else {
-    // User is signed out or session has expired
-    console.log("No valid authentication session found.");
-		signInButton.hidden = false;
+    console.log("No valid user session found.");
+		sI.hidden = false;
   }
-};
+});
 
 sI.addEventListener("click", async () => {
   const result = await signInWithPopup(auth, new GoogleAuthProvider());
