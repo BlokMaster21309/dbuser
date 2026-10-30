@@ -22,22 +22,24 @@ const auth = getAuth(app);
 // Your code goes below this line.
 const prefillQuiz = (new URLSearchParams(window.location.search)).get('quiz')
 
-let response;
-let sF;
-let id;
-let quizRef;
-let quizSnapshot;
-let quiz;
-let i;
-let user = JSON.parse(localStorage.getItem("user"));
+let response; // full response from initial query
+let result; // full result from auth
+let sF; // why are we naming our varables how we name our objects?
+let id; // id of the current quiz
+let quizRef; // neither of these variables are needed, will refactor to remove next commit
+let quizSnapshot; // <--/
+let quiz; // the object of the currently selected quiz
+let i; // a counter variable
+let userp; // thats not how you spell usurp >:[
 
-const qT = document.getElementById("qT");
-const qQ = document.getElementById("qQ");
-const qL = document.getElementById("qL");
-const sI = document.getElementById("sI");
-const fS = document.getElementById("formselecta");
-const dM = document.getElementById("main");
-const fJ = document.getElementById("failure");
+const qQ = document.getElementById("qQ"); // feildset of the quiz
+const qL = document.getElementById("qL"); // legend of the quiz
+const sI = document.getElementById("sI"); // sign in button
+const qS = document.getElementById("submissibles"); // submit button of the quiz
+const fS = document.getElementById("formselecta"); // select what form
+const dM = document.getElementById("main"); // for when javascript is on
+const fJ = document.getElementById("failure"); // for when javascript is off
+const mew = document.getElementById("nyaa~"); // :3
 
 fJ.hidden = true;
 dM.hidden = false;
@@ -111,24 +113,6 @@ function fillQuestion(q) {
 		return "text";
 	}
 
-	if (quiz.questions[i].radio) {
-		qQ.innerHTML += `
-			<label for="q${i}">${q.text}
-				<input id="q${i}" name="q${i}">
-			</label>
-		`;
-		console.log(`Filled question ${i} with ${q.radio}`)
-		return "radio";
-	}
-
-	if (quiz.questions[i].arbitrary) {
-		qQ.innerHTML += `
-			<div id="q${i}">${q.arbitrary}</div>
-		`;
-		console.log(`Filled question ${i} with ${q.arbitrary}`)
-		return "arbitrary";
-	}
-
 	else {
 		console.error(`Failed to fill question ${i} from ${q}`)
 		return false;
@@ -138,16 +122,18 @@ function fillQuestion(q) {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log("User is authenticated:", user.uid);
+		userp = user;
+		mew.textContent = "Fill Out";
+		sI.hidden = true;
   } else {
     console.log("No valid user session found.");
+		mew.textContent = "View";
 		sI.hidden = false;
   }
 });
 
 sI.addEventListener("click", async () => {
-  const result = await signInWithPopup(auth, new GoogleAuthProvider());
+  result = await signInWithPopup(auth, new GoogleAuthProvider());
   console.log("Signed in as obj", result.user);
   console.log("Signed in as", result.user.email);
-  user = result.user; // God save the quser!
-	localStorage.setItem("user", JSON.stringify(result.user))
 });
