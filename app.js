@@ -28,9 +28,12 @@ let sF; // why are we naming our varables how we name our objects?
 let id; // id of the current quiz
 let quizRef; // neither of these variables are needed, will refactor to remove next commit
 let quizSnapshot; // <--/
+let myResponseRef; // reference of the response, probably also not needed
+let myResponse; // response to be set at the location defined previously
 let quiz; // the object of the currently selected quiz
 let i; // a counter variable
 let userp; // thats not how you spell usurp >:[
+let answers; // the answers of the quiz
 
 const qQ = document.getElementById("qQ"); // feildset of the quiz
 const qL = document.getElementById("qL"); // legend of the quiz
@@ -66,7 +69,7 @@ fS.addEventListener("change", (e) => {
 	});
 
 async function fillFrom() {
-	console.log(`quizzes/${sF}`);
+	console.log(`quizRef querying quizzes/${sF}`);
 	quizRef = doc(db, `quizzes/${sF}`);
 	console.log(quizRef);
 	quizSnapshot = await getDoc(quizRef);
@@ -106,10 +109,10 @@ function fillQuestion(q) {
 			const laQuease = document.createElement("input");
 				laQuease.id = `q${i}`;
 				laQuease.name = `q${i}`;
-				laQuease.classList = "qP TextQuestion";
+				laQuease.classList = `qP TextQuestion ${i}`;
 			laPeace.appendChild(laQuease);
 		qQ.appendChild(laPeace);
-		console.log(`Filled question ${i} with ${q.text}`)
+		console.log(`Filled question ${i} with "${q.text}"`)
 		return "text";
 	}
 
@@ -125,10 +128,12 @@ onAuthStateChanged(auth, (user) => {
 		userp = user;
 		mew.textContent = "Fill Out";
 		sI.hidden = true;
+		qS.hidden = false;
   } else {
     console.log("No valid user session found.");
 		mew.textContent = "View";
 		sI.hidden = false;
+		qS.hidden = true;
   }
 });
 
@@ -137,3 +142,18 @@ sI.addEventListener("click", async () => {
   console.log("Signed in as obj", result.user);
   console.log("Signed in as", result.user.email);
 });
+
+qS.addEventListener("click", async () => {
+	answers = [];
+	for (const TextQuestion of qQ.querySelectorAll(".TextQuestion")) {
+		answers.push(TextQuestion.value)
+	}
+	console.log (answers)
+	myResponseRef = doc(db, `quizzes/${sF}/responses/${userp.uid}`);
+	myResponse = {
+  name : userp.displayName,
+  answers : answers
+};
+await setDoc(myResponseRef, myResponse);
+console.log("God Saved The User!");
+})
