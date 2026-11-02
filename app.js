@@ -8,6 +8,10 @@ import {
   collection,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {
+	onAuthChange,
+	userp
+} from "./auth.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -16,7 +20,6 @@ const db = getFirestore(app);
 const prefillQuiz = (new URLSearchParams(window.location.search)).get('quiz')
 
 let response; // full response from initial query
-let result; // full result from auth
 let sF; // why are we naming our varables how we name our objects?
 let id; // id of the current quiz
 let myResponseRef; // reference of the response, probably also not needed
@@ -31,6 +34,7 @@ const qS = document.getElementById("submissibles"); // submit button of the quiz
 const fS = document.getElementById("formselecta"); // select what form
 const dM = document.getElementById("main"); // for when javascript is on
 const fJ = document.getElementById("failure"); // for when javascript is off
+const mew = document.getElementById("nyaa~"); // :3
 
 fJ.hidden = true;
 dM.hidden = false;
@@ -44,20 +48,18 @@ for (let responseDoc of quizzes.docs) {
 };
 
 fS.addEventListener("change", (e) => {
+		sF = e.target.value || null;
+		unfillForm()
 		if (e.target.value) {
-			sF = e.target.value;
-			unfillForm()
 			fillFrom()
 			console.log(`Form selected: ${e.target.value}.`);
 		} else {
-			sF = null;
-			unfillForm()
 			console.log("Form deselected.");
 		}
 	});
 
 async function fillFrom() {
-	quiz = await getDoc(doc(db, `quizzes/${sF}`)).data();
+	quiz = (await getDoc(doc(db, `quizzes/${sF}`))).data();
 	console.log(quiz);
 	console.log(`this quiz has ${quiz.questions.length} questions`);
 	console.log(`the first question is "${quiz.questions[1].text}"`);
@@ -120,3 +122,17 @@ console.log(myResponse);
 await setDoc(myResponseRef, myResponse);
 console.log("God Saved The User!");
 })
+
+onAuthChange((user) => {
+  if (user) {
+    console.log("Logged in on this specific page:", user.uid);
+		mew.textContent = "Fill Out";
+		sI.hidden = true;
+		qS.hidden = false;
+  } else {
+    console.log("Logged out on this specific page");
+		mew.textContent = "View";
+		sI.hidden = false;
+		qS.hidden = true;
+  }
+});

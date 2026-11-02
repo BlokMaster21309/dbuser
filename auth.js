@@ -10,24 +10,23 @@ import {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const mew = document.getElementById("nyaa~"); // :3
 const sI = document.getElementById("sI"); // sign in button
-const qS = document.getElementById("submissibles"); // submit button of the quiz
 
-let userp; // thats not how you spell usurp >:[
+export let userp; // thats not how you spell usurp >:[
+export let result; // full result from auth
+export function onAuthChange(callback) {
+  return onAuthStateChanged(auth, (user) => {
+    userp = user;
+    if (callback) callback(user);
+  });
+}
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log("User is authenticated:", user.uid);
 		userp = user;
-		mew.textContent = "Fill Out";
-		sI.hidden = true;
-		qS.hidden = false;
   } else {
     console.log("No valid user session found.");
-		mew.textContent = "View";
-		sI.hidden = false;
-		qS.hidden = true;
   }
 });
 
