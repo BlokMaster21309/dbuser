@@ -52,8 +52,12 @@ fS.addEventListener("change", (e) => {
 		unfillForm()
 		if (e.target.value) {
 			fillFrom()
+			qS.textContent = "Submit";
+			if (userp) qS.hidden = false;
 			console.log(`Form selected: ${e.target.value}.`);
 		} else {
+			qS.hidden = true;
+			if (!userp) 
 			console.log("Form deselected.");
 		}
 	});
@@ -120,17 +124,18 @@ qS.addEventListener("click", async () => {
 };
 console.log(myResponse);
 await setDoc(myResponseRef, myResponse);
+qS.textContent = "Submit Again!";
 console.log("God Saved The User!");
 })
 
 onAuthChange((user) => {
   if (user) {
-    console.log("Logged in on this specific page:", user.uid);
+    console.log("Logged in on this page:", user.uid);
 		mew.textContent = "Fill Out";
 		sI.hidden = true;
-		qS.hidden = false;
+		if (quiz) qS.hidden = false;
   } else {
-    console.log("Logged out on this specific page");
+    console.log("Logged out on this page");
 		mew.textContent = "View";
 		sI.hidden = false;
 		qS.hidden = true;
