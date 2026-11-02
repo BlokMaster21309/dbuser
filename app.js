@@ -1,12 +1,6 @@
 import { firebaseConfig } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-	onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {
   getFirestore,
   doc,
   getDoc,
@@ -17,7 +11,6 @@ import {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
 
 // Your code goes below this line.
 const prefillQuiz = (new URLSearchParams(window.location.search)).get('quiz')
@@ -32,17 +25,14 @@ let myResponseRef; // reference of the response, probably also not needed
 let myResponse; // response to be set at the location defined previously
 let quiz; // the object of the currently selected quiz
 let i; // a counter variable
-let userp; // thats not how you spell usurp >:[
 let answers; // the answers of the quiz
 
 const qQ = document.getElementById("qQ"); // feildset of the quiz
 const qL = document.getElementById("qL"); // legend of the quiz
-const sI = document.getElementById("sI"); // sign in button
 const qS = document.getElementById("submissibles"); // submit button of the quiz
 const fS = document.getElementById("formselecta"); // select what form
 const dM = document.getElementById("main"); // for when javascript is on
 const fJ = document.getElementById("failure"); // for when javascript is off
-const mew = document.getElementById("nyaa~"); // :3
 
 fJ.hidden = true;
 dM.hidden = false;
@@ -122,27 +112,6 @@ function fillQuestion(q) {
 	}
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("User is authenticated:", user.uid);
-		userp = user;
-		mew.textContent = "Fill Out";
-		sI.hidden = true;
-		qS.hidden = false;
-  } else {
-    console.log("No valid user session found.");
-		mew.textContent = "View";
-		sI.hidden = false;
-		qS.hidden = true;
-  }
-});
-
-sI.addEventListener("click", async () => {
-  result = await signInWithPopup(auth, new GoogleAuthProvider());
-  console.log("Signed in as obj", result.user);
-  console.log("Signed in as", result.user.email);
-});
-
 qS.addEventListener("click", async () => {
 	answers = [];
 	for (const TextQuestion of qQ.querySelectorAll(".TextQuestion")) {
@@ -154,6 +123,7 @@ qS.addEventListener("click", async () => {
   name : userp.displayName,
   answers : answers
 };
+console.log(myResponse);
 await setDoc(myResponseRef, myResponse);
 console.log("God Saved The User!");
 })
