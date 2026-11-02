@@ -19,8 +19,6 @@ let response; // full response from initial query
 let result; // full result from auth
 let sF; // why are we naming our varables how we name our objects?
 let id; // id of the current quiz
-let quizRef; // neither of these variables are needed, will refactor to remove next commit
-let quizSnapshot; // <--/
 let myResponseRef; // reference of the response, probably also not needed
 let myResponse; // response to be set at the location defined previously
 let quiz; // the object of the currently selected quiz
@@ -59,12 +57,7 @@ fS.addEventListener("change", (e) => {
 	});
 
 async function fillFrom() {
-	console.log(`quizRef querying quizzes/${sF}`);
-	quizRef = doc(db, `quizzes/${sF}`);
-	console.log(quizRef);
-	quizSnapshot = await getDoc(quizRef);
-	console.log(quizSnapshot)
-	quiz = quizSnapshot.data();
+	quiz = await getDoc(doc(db, `quizzes/${sF}`)).data();
 	console.log(quiz);
 	console.log(`this quiz has ${quiz.questions.length} questions`);
 	console.log(`the first question is "${quiz.questions[1].text}"`);
