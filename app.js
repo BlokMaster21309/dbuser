@@ -89,7 +89,7 @@ function fillFormOption() {
 		fopt.textContent = response.title;
 		fopt.value = id
 	fS.appendChild(fopt);
-	if (prefillQuiz) {
+	if (prefillQuiz === id) {
 		fS.value = prefillQuiz;
 		sF = prefillQuiz;
 		fillFrom();
