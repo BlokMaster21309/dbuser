@@ -31,11 +31,11 @@ const fJ = document.getElementById("failure"); // for when javascript is off
 const qS = document.getElementById("submissibles"); // submit button of the quiz
 const rS = document.getElementById("pookieReese"); // reset form
 const qL = document.getElementById("qL"); // legend of the quiz
-const quizId = document.getElementById("id"); // feildset of the quiz
-const questions = document.getElementById("questions"); // submit button of the quiz
-const id = document.getElementById("id"); // submit button of the quiz
-const title = document.getElementById("title"); // submit button of the quiz
-const aT = document.getElementById("aT"); // submit button of the quiz
+const quizId = document.getElementById("id"); // input for id of the quiz
+const questions = document.getElementById("questions"); // feildset of questions of the quiz
+const id = document.getElementById("id"); // input for id of the quiz
+const title = document.getElementById("title"); // input for title of the quiz
+const aT = document.getElementById("aT"); // button to add a text question to the quiz
 const qQ = document.getElementById("qQ"); // feildset of the quiz
 
 fJ.hidden = true;
@@ -51,4 +51,22 @@ onAuthChange((user) => {
 		sI.hidden = false;
 		qS.hidden = true;
 	}
+});
+
+aT.addEventListener("click", async () => {
+	const exceptional = document.createElement("label");
+		exceptional.textContent = "Text Question: ";
+		exceptional.classList = "question TextQuestionLabel";
+		const frop = document.createElement("input");
+			frop.placeholder = "The text of the question"
+			frop.classList = "question TextQuestionText"
+		exceptional.appendChild(frop);
+	questions.appendChild(exceptional);
+	console.log("Added text question");
+});
+
+rS.addEventListener("click", async () => {
+	const question = form.querySelectorAll(".question");
+	question.forEach(child => child.remove());
+	console.log("Reset Form");
 });
