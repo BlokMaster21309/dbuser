@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Your code goes below this line.
-const prefillQuiz = (new URLSearchParams(window.location.search)).get('quiz')
+const prefillQuiz = (new URLSearchParams(window.location.search)).get('q')
 
 let response; // full response from initial query
 let sF; // why are we naming our varables how we name our objects?
@@ -87,6 +87,11 @@ function fillFormOption() {
 		fopt.textContent = response.title;
 		fopt.value = id
 	fS.appendChild(fopt);
+	if (prefillQuiz) {
+		fS.value = prefillQuiz;
+		sF = prefillQuiz;
+		fillFrom();
+	};
 }
 
 function fillQuestion(q) {
