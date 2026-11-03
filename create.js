@@ -16,6 +16,31 @@ import {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let response; // full response from initial query
+let sF; // why are we naming our varables how we name our objects?
+// let id; // id of the current quiz
+let myResponseRef; // reference of the response, probably also not needed
+let myResponse; // response to be set at the location defined previously
+let quiz; // the object of the currently selected quiz
+let i; // a counter variable
+let answers; // the answers of the quiz
+
+const sI = document.getElementById("sI"); // sign in button
+const dM = document.getElementById("main"); // for when javascript is on
+const fJ = document.getElementById("failure"); // for when javascript is off
+const qS = document.getElementById("submissibles"); // submit button of the quiz
+const rS = document.getElementById("pookieReese"); // reset form
+const qL = document.getElementById("qL"); // legend of the quiz
+const quizId = document.getElementById("id"); // feildset of the quiz
+const questions = document.getElementById("questions"); // submit button of the quiz
+const id = document.getElementById("id"); // submit button of the quiz
+const title = document.getElementById("title"); // submit button of the quiz
+const aT = document.getElementById("aT"); // submit button of the quiz
+const qQ = document.getElementById("qQ"); // feildset of the quiz
+
+fJ.hidden = true;
+dM.hidden = false;
+
 onAuthChange((user) => {
 	if (user) {
 		console.log("Logged in on this page:", user.uid);

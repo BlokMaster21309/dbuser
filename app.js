@@ -28,6 +28,8 @@ let quiz; // the object of the currently selected quiz
 let i; // a counter variable
 let answers; // the answers of the quiz
 
+const sI = document.getElementById("sI"); // sign in button
+const rS = document.getElementById("pookieReese"); // reset form
 const qQ = document.getElementById("qQ"); // feildset of the quiz
 const qL = document.getElementById("qL"); // legend of the quiz
 const qS = document.getElementById("submissibles"); // submit button of the quiz
@@ -114,13 +116,13 @@ function fillQuestion(q) {
 		console.error(`Failed to fill question ${i} from ${q}`)
 		return false;
 	}
-}
+};
 
 qS.addEventListener("click", async () => {
 	answers = [];
 	for (const TextQuestion of qQ.querySelectorAll(".TextQuestion")) {
 		answers.push(TextQuestion.value)
-	}
+	};
 	console.log (answers)
 	myResponseRef = doc(db, `quizzes/${sF}/responses/${userp.uid}`);
 	myResponse = {
@@ -131,7 +133,14 @@ console.log(myResponse);
 await setDoc(myResponseRef, myResponse);
 qS.textContent = "Submit Again!";
 console.log("God Saved The User!");
-})
+});
+
+rS.addEventListener("click", async () => {
+	for (const TextQuestion of qQ.querySelectorAll(".TextQuestion")) {
+		TextQuestion.value = ""
+	};
+console.log("Reset Questions");
+});
 
 onAuthChange((user) => {
   if (user) {

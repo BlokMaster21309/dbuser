@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="create.js"></script>
+    <script type="module" src="auth.js"></script>
+  </head>
+  <body>
+		<p id="failure">Javascript is required to use this page.</p>
+		<main id="main" hidden>
+			<form id="form">	
+				<fieldset id="questions">
+					<legend id="qL">
+						<input id="id" name="id" placeholder="form-id"/>
+						<input id="title" name="title" placeholder="Form Title"/>
+					</legend>
+				</fieldset>
+				<button id="aT">Add Text Question</button>
+				<button id="sI" type="button">Sign In To Submit</button>
+				<button id="submissibles" type="button" hidden disabled>Submit</button>
+				<button id="pookieReese" type="reset">Reset</button>
+			</form>
+		</main>
+    <footer>
+      <a href="citations.html">Sources &amp; Citations</a>
+      <a href="index.html">Fill Out a Quiz</a>
+      <!-- <a href="view.html">View Other Answers</a> -->
+    </footer>
+  </body>
+</html>
