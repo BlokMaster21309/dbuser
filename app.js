@@ -144,12 +144,12 @@ console.log("Reset Questions");
 
 onAuthChange((user) => {
   if (user) {
-    console.log("Logged in on this page:", user.uid);
+    console.log(`Logged in as ${user.uid}.`);
 		mew.textContent = "Fill Out";
 		sI.hidden = true;
 		if (quiz) qS.hidden = false;
   } else {
-    console.log("Logged out on this page");
+    console.log("Logged out.");
 		mew.textContent = "View";
 		sI.hidden = false;
 		qS.hidden = true;

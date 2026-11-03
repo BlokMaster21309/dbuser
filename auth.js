@@ -21,15 +21,6 @@ export function onAuthChange(callback) {
   });
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("User is authenticated:", user.uid);
-		userp = user;
-  } else {
-    console.log("No valid user session found.");
-  }
-});
-
 sI.addEventListener("click", async () => {
   result = await signInWithPopup(auth, new GoogleAuthProvider());
   console.log("Signed in as obj", result.user);
