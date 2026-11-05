@@ -68,7 +68,7 @@ async function fillFrom() {
 	quiz = (await getDoc(doc(db, `quizzes/${sF}`))).data();
 	console.log(quiz);
 	console.log(`this quiz has ${quiz.questions.length} questions`);
-	console.log(`the first question is "${quiz.questions[1].text}"`);
+	console.log(`the first question is "${quiz.questions[0].text}"`);
 
 	i = 0
 	for (const q of quiz.questions) {
